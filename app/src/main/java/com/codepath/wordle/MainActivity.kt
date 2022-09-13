@@ -1,13 +1,16 @@
 package com.codepath.wordle
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import com.codepath.wordle.FourLetterWordList.FourLetterWordList
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.codepath.wordle.FourLetterWordList.FourLetterWordList
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,39 +43,53 @@ class MainActivity : AppCompatActivity() {
             thisGuess = currentGuess.text.toString().uppercase()
             when (guessCount) {
                 1 -> {
-                    Toast.makeText(it.context, "Reached 1", Toast.LENGTH_SHORT).show()
+                    currentGuess.text.clear()
                     guess1.visibility = View.VISIBLE
                     word1.text = thisGuess
                     word1.visibility = View.VISIBLE
                     guess1Check.visibility = View.VISIBLE
                     word1Check.text = checkGuess(thisGuess)
                     word1Check.visibility = View.VISIBLE
+                    //hide Keyboard
+                    this.currentFocus?.let { view ->
+                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+                    }
                 }
                 2 -> {
-                    Toast.makeText(it.context, "Reached 2", Toast.LENGTH_SHORT).show()
+                    currentGuess.text.clear()
                     guess2.visibility = View.VISIBLE
                     word2.text = thisGuess
                     word2.visibility = View.VISIBLE
                     guess2Check.visibility = View.VISIBLE
                     word2Check.text = checkGuess(thisGuess)
                     word2Check.visibility = View.VISIBLE
+                    //hide Keyboard
+                    this.currentFocus?.let { view ->
+                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+                    }
                 }
                 3 -> {
-                    Toast.makeText(it.context, "Reached 3", Toast.LENGTH_SHORT).show()
+                    currentGuess.text.clear()
                     guess3.visibility = View.VISIBLE
                     word3.text = thisGuess
                     word3.visibility = View.VISIBLE
                     guess3Check.visibility = View.VISIBLE
                     word3Check.text = checkGuess(thisGuess)
                     word3Check.visibility = View.VISIBLE
-                    answer.text = wordToGuess.toString()
+                    answer.text = wordToGuess
                     answer.visibility = View.VISIBLE
                     button.visibility = View.INVISIBLE
+                    //hide Keyboard
+                    this.currentFocus?.let { view ->
+                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+                    }
                 }
                 else -> {
                     /*
                     button.text = "RESTART"
-                    Toast.makeText(it.context, "Reached start else", Toast.LENGTH_SHORT).show()
                     button.setOnClickListener {
                         guess1.visibility = View.INVISIBLE
                         guess2.visibility = View.INVISIBLE
@@ -97,8 +114,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-
 
     /**
      * Parameters / Fields:
