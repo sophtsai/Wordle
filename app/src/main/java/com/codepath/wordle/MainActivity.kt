@@ -11,6 +11,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.codepath.wordle.FourLetterWordList.FourLetterWordList
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import nl.dionsegijn.konfetti.core.models.Size
+import nl.dionsegijn.konfetti.xml.KonfettiView
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         val word3Check = findViewById<TextView>(R.id.word3check)
         val currentGuess = findViewById<EditText>(R.id.editTextGuess)
         val answer = findViewById<TextView>(R.id.guessWord)
+        val konfettiView = findViewById<KonfettiView>(R.id.konfettiView)
 
         answer.text = wordToGuess
         answer.visibility = View.VISIBLE
@@ -53,15 +60,6 @@ class MainActivity : AppCompatActivity() {
                     guess1Check.visibility = View.VISIBLE
                     word1Check.text = checkGuess(thisGuess)
                     word1Check.visibility = View.VISIBLE
-//                    if (word1.equals(wordToGuess)) {
-//                        answer.visibility = View.VISIBLE
-//                        button.visibility = View.INVISIBLE
-//                    }
-                    //hide Keyboard
-//                    this.currentFocus?.let { view ->
-//                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
-//                    }
                 }
                 2 -> {
                     currentGuess.text.clear()
@@ -71,15 +69,6 @@ class MainActivity : AppCompatActivity() {
                     guess2Check.visibility = View.VISIBLE
                     word2Check.text = checkGuess(thisGuess)
                     word2Check.visibility = View.VISIBLE
-//                    if (word2.equals(wordToGuess)) {
-//                        answer.visibility = View.VISIBLE
-//                        button.visibility = View.INVISIBLE
-//                    }
-                    //hide Keyboard
-//                    this.currentFocus?.let { view ->
-//                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
-//                    }
                 }
                 3 -> {
                     currentGuess.text.clear()
@@ -91,11 +80,6 @@ class MainActivity : AppCompatActivity() {
                     word3Check.visibility = View.VISIBLE
                     answer.visibility = View.VISIBLE
                     button.visibility = View.INVISIBLE
-                    //hide Keyboard
-//                    this.currentFocus?.let { view ->
-//                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
-//                    }
                 }
                 else -> {
                     /*
@@ -130,6 +114,17 @@ class MainActivity : AppCompatActivity() {
             if (thisGuess == wordToGuess) {
                 answer.visibility = View.VISIBLE
                 button.visibility = View.INVISIBLE
+                currentGuess.visibility = View.INVISIBLE
+                val party = Party(
+                    speed = 0f,
+                    maxSpeed = 30f,
+                    damping = 0.9f,
+                    spread = 360,
+                    colors = listOf(0xff99b6, 0xffc2e2, 0xaf99ff, 0xcaadff),
+                    emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100),
+                    position = Position.Relative(0.5, 0.3)
+                )
+                konfettiView.start(party)
             }
         }
 
