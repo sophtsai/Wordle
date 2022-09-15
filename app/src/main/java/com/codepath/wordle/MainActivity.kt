@@ -14,7 +14,6 @@ import com.codepath.wordle.FourLetterWordList.FourLetterWordList
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
 import nl.dionsegijn.konfetti.core.emitter.Emitter
-import nl.dionsegijn.konfetti.core.models.Size
 import nl.dionsegijn.konfetti.xml.KonfettiView
 import java.util.concurrent.TimeUnit
 
@@ -46,85 +45,92 @@ class MainActivity : AppCompatActivity() {
         val konfettiView = findViewById<KonfettiView>(R.id.konfettiView)
 
         answer.text = wordToGuess
-        answer.visibility = View.VISIBLE
 
         button.setOnClickListener {
-            guessCount += 1
-            thisGuess = currentGuess.text.toString().uppercase()
-            when (guessCount) {
-                1 -> {
-                    currentGuess.text.clear()
-                    guess1.visibility = View.VISIBLE
-                    word1.text = thisGuess
-                    word1.visibility = View.VISIBLE
-                    guess1Check.visibility = View.VISIBLE
-                    word1Check.text = checkGuess(thisGuess)
-                    word1Check.visibility = View.VISIBLE
+            if (currentGuess.text.toString().length != 4) {
+                Toast.makeText(it.context, "This is not a 4 letter word!", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                guessCount += 1
+                thisGuess = currentGuess.text.toString().uppercase()
+                when (guessCount) {
+                    1 -> {
+                        currentGuess.text.clear()
+                        guess1.visibility = View.VISIBLE
+                        word1.text = thisGuess
+                        word1.visibility = View.VISIBLE
+                        guess1Check.visibility = View.VISIBLE
+                        word1Check.text = checkGuess(thisGuess)
+                        word1Check.visibility = View.VISIBLE
+                    }
+                    2 -> {
+                        currentGuess.text.clear()
+                        guess2.visibility = View.VISIBLE
+                        word2.text = thisGuess
+                        word2.visibility = View.VISIBLE
+                        guess2Check.visibility = View.VISIBLE
+                        word2Check.text = checkGuess(thisGuess)
+                        word2Check.visibility = View.VISIBLE
+                    }
+                    3 -> {
+                        currentGuess.text.clear()
+                        guess3.visibility = View.VISIBLE
+                        word3.text = thisGuess
+                        word3.visibility = View.VISIBLE
+                        guess3Check.visibility = View.VISIBLE
+                        word3Check.text = checkGuess(thisGuess)
+                        word3Check.visibility = View.VISIBLE
+                        answer.visibility = View.VISIBLE
+                        button.visibility = View.INVISIBLE
+                    }
+                    else -> {
+                        /*
+                        button.text = "RESTART"
+                        button.setOnClickListener {
+                            guess1.visibility = View.INVISIBLE
+                            guess2.visibility = View.INVISIBLE
+                            guess3.visibility = View.INVISIBLE
+                            guess1Check.visibility = View.INVISIBLE
+                            guess2Check.visibility = View.INVISIBLE
+                            guess3Check.visibility = View.INVISIBLE
+                            word1.visibility = View.INVISIBLE
+                            word2.visibility = View.INVISIBLE
+                            word3.visibility = View.INVISIBLE
+                            word1Check.visibility = View.INVISIBLE
+                            word2Check.visibility = View.INVISIBLE
+                            word3Check.visibility = View.INVISIBLE
+                            wordToGuess = FourLetterWordList.getRandomFourLetterWord()
+                            guessCount = 0
+                            thisGuess = ""
+                            button.text = "GUESS!"
+                            Toast.makeText(it.context, "Reached reset", Toast.LENGTH_SHORT).show()
+                        }*/
+                    }
+
                 }
-                2 -> {
-                    currentGuess.text.clear()
-                    guess2.visibility = View.VISIBLE
-                    word2.text = thisGuess
-                    word2.visibility = View.VISIBLE
-                    guess2Check.visibility = View.VISIBLE
-                    word2Check.text = checkGuess(thisGuess)
-                    word2Check.visibility = View.VISIBLE
-                }
-                3 -> {
-                    currentGuess.text.clear()
-                    guess3.visibility = View.VISIBLE
-                    word3.text = thisGuess
-                    word3.visibility = View.VISIBLE
-                    guess3Check.visibility = View.VISIBLE
-                    word3Check.text = checkGuess(thisGuess)
-                    word3Check.visibility = View.VISIBLE
-                    answer.visibility = View.VISIBLE
-                    button.visibility = View.INVISIBLE
-                }
-                else -> {
-                    /*
-                    button.text = "RESTART"
-                    button.setOnClickListener {
-                        guess1.visibility = View.INVISIBLE
-                        guess2.visibility = View.INVISIBLE
-                        guess3.visibility = View.INVISIBLE
-                        guess1Check.visibility = View.INVISIBLE
-                        guess2Check.visibility = View.INVISIBLE
-                        guess3Check.visibility = View.INVISIBLE
-                        word1.visibility = View.INVISIBLE
-                        word2.visibility = View.INVISIBLE
-                        word3.visibility = View.INVISIBLE
-                        word1Check.visibility = View.INVISIBLE
-                        word2Check.visibility = View.INVISIBLE
-                        word3Check.visibility = View.INVISIBLE
-                        wordToGuess = FourLetterWordList.getRandomFourLetterWord()
-                        guessCount = 0
-                        thisGuess = ""
-                        button.text = "GUESS!"
-                        Toast.makeText(it.context, "Reached reset", Toast.LENGTH_SHORT).show()
-                    }*/
+                // hide Keyboard
+                this.currentFocus?.let { view ->
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    imm?.hideSoftInputFromWindow(view.windowToken, 0)
                 }
 
-            }
-            //hide Keyboard
-            this.currentFocus?.let { view ->
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                imm?.hideSoftInputFromWindow(view.windowToken, 0)
-            }
-            if (thisGuess == wordToGuess) {
-                answer.visibility = View.VISIBLE
-                button.visibility = View.INVISIBLE
-                currentGuess.visibility = View.INVISIBLE
-                val party = Party(
-                    speed = 0f,
-                    maxSpeed = 30f,
-                    damping = 0.9f,
-                    spread = 360,
-                    colors = listOf(0xff99b6, 0xffc2e2, 0xaf99ff, 0xcaadff),
-                    emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100),
-                    position = Position.Relative(0.5, 0.3)
-                )
-                konfettiView.start(party)
+                // Check if correct answer
+                if (thisGuess == wordToGuess) {
+                    answer.visibility = View.VISIBLE
+                    button.visibility = View.INVISIBLE
+                    currentGuess.visibility = View.INVISIBLE
+                    // Confetti
+                    val party = Party(
+                        speed = 0f,
+                        maxSpeed = 30f,
+                        damping = 0.9f,
+                        spread = 360,
+                        colors = listOf(0xff99b6, 0xffc2e2, 0xaf99ff, 0xcaadff),
+                        emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100),
+                        position = Position.Relative(0.5, 0.3)
+                    )
+                    konfettiView.start(party)
+                }
             }
         }
 
