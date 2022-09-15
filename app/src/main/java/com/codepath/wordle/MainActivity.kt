@@ -35,8 +35,11 @@ class MainActivity : AppCompatActivity() {
         val word1Check = findViewById<TextView>(R.id.word1check)
         val word2Check = findViewById<TextView>(R.id.word2check)
         val word3Check = findViewById<TextView>(R.id.word3check)
-        val answer = findViewById<TextView>(R.id.guessWord)
         val currentGuess = findViewById<EditText>(R.id.editTextGuess)
+        val answer = findViewById<TextView>(R.id.guessWord)
+
+        answer.text = wordToGuess
+        answer.visibility = View.VISIBLE
 
         button.setOnClickListener {
             guessCount += 1
@@ -50,11 +53,15 @@ class MainActivity : AppCompatActivity() {
                     guess1Check.visibility = View.VISIBLE
                     word1Check.text = checkGuess(thisGuess)
                     word1Check.visibility = View.VISIBLE
+//                    if (word1.equals(wordToGuess)) {
+//                        answer.visibility = View.VISIBLE
+//                        button.visibility = View.INVISIBLE
+//                    }
                     //hide Keyboard
-                    this.currentFocus?.let { view ->
-                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
-                    }
+//                    this.currentFocus?.let { view ->
+//                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+//                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+//                    }
                 }
                 2 -> {
                     currentGuess.text.clear()
@@ -64,11 +71,15 @@ class MainActivity : AppCompatActivity() {
                     guess2Check.visibility = View.VISIBLE
                     word2Check.text = checkGuess(thisGuess)
                     word2Check.visibility = View.VISIBLE
+//                    if (word2.equals(wordToGuess)) {
+//                        answer.visibility = View.VISIBLE
+//                        button.visibility = View.INVISIBLE
+//                    }
                     //hide Keyboard
-                    this.currentFocus?.let { view ->
-                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
-                    }
+//                    this.currentFocus?.let { view ->
+//                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+//                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+//                    }
                 }
                 3 -> {
                     currentGuess.text.clear()
@@ -78,14 +89,13 @@ class MainActivity : AppCompatActivity() {
                     guess3Check.visibility = View.VISIBLE
                     word3Check.text = checkGuess(thisGuess)
                     word3Check.visibility = View.VISIBLE
-                    answer.text = wordToGuess
                     answer.visibility = View.VISIBLE
                     button.visibility = View.INVISIBLE
                     //hide Keyboard
-                    this.currentFocus?.let { view ->
-                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
-                    }
+//                    this.currentFocus?.let { view ->
+//                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+//                        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+//                    }
                 }
                 else -> {
                     /*
@@ -110,6 +120,16 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(it.context, "Reached reset", Toast.LENGTH_SHORT).show()
                     }*/
                 }
+
+            }
+            //hide Keyboard
+            this.currentFocus?.let { view ->
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+            if (thisGuess == wordToGuess) {
+                answer.visibility = View.VISIBLE
+                button.visibility = View.INVISIBLE
             }
         }
 
