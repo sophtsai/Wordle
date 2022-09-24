@@ -37,10 +37,6 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 [ScreenToGif](https://www.screentogif.com/) for Windows
 [peek](https://github.com/phw/peek) for Linux. -->
 
-## Notes
-
-Describe any challenges encountered while building the app.
-
 ## License
 
     Copyright [2022] [Sophie Tsai]
